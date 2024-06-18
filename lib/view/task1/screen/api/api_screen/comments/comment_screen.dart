@@ -1,4 +1,4 @@
-import 'package:adv_flutter_ch5/view/task1/provider/comment_class.dart';
+import 'package:adv_flutter_ch5/view/task1/provider/comment_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,7 @@ class CommentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<CommentClass>(
+      body: Consumer<CommentProvider>(
         builder: (context, commentClass, child) {
           if (commentClass.commentsList.isEmpty) {
             return Center(child: CircularProgressIndicator());

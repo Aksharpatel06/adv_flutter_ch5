@@ -3,12 +3,12 @@ import 'package:adv_flutter_ch5/view/task1/modal/comment_modal/comment_modal.dar
 import 'package:flutter/material.dart';
 import '../screen/api/componects/api_sarvice.dart';
 
-class CommentClass extends ChangeNotifier {
+class CommentProvider extends ChangeNotifier {
   List<CommentModal> _commentsList = [];
 
   List<CommentModal> get commentsList => _commentsList;
 
-  CommentClass() {
+  CommentProvider() {
     getData();
   }
 
