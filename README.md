@@ -119,3 +119,177 @@ By following these steps, you should be able to set a wallpaper in your Flutter 
 ### Video
 
 https://github.com/Aksharpatel06/adv_flutter_ch5/assets/143181114/4e9705b5-5fa5-4b68-8a40-cfe545cd59b7
+
+In Flutter, working with network APIs is a common task for fetching data from the internet, sending data to a server, and handling various network-related tasks. The `http` package is widely used for making HTTP requests. Here's a step-by-step guide on how to use it:
+
+### 1. Add the `http` package to your project
+
+First, you need to add the `http` package to your `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.14.0
+```
+
+Run `flutter pub get` to install the package.
+
+### 2. Import the `http` package
+
+In your Dart file, import the `http` package:
+
+```dart
+import 'package:http/http.dart' as http;
+import 'dart:convert'; // For JSON encoding and decoding
+```
+
+### 3. Make a GET request
+
+Here’s an example of making a GET request to fetch data from an API:
+
+```dart
+Future<void> fetchData() async {
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+
+  if (response.statusCode == 200) {
+    // If the server returns an OK response, parse the JSON.
+    List<dynamic> data = jsonDecode(response.body);
+    print(data);
+  } else {
+    // If the server did not return a 200 OK response,
+    // throw an exception.
+    throw Exception('Failed to load data');
+  }
+}
+```
+
+### 4. Make a POST request
+
+Here’s an example of making a POST request to send data to an API:
+
+```dart
+Future<void> sendData() async {
+  final response = await http.post(
+    Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'title': 'foo',
+      'body': 'bar',
+      'userId': '1',
+    }),
+  );
+
+  if (response.statusCode == 201) {
+    // If the server returns a CREATED response, parse the JSON.
+    var data = jsonDecode(response.body);
+    print(data);
+  } else {
+    // If the server did not return a 201 CREATED response,
+    // throw an exception.
+    throw Exception('Failed to send data');
+  }
+}
+```
+
+### 5. Handling exceptions
+
+Always wrap your HTTP requests in try-catch blocks to handle exceptions:
+
+```dart
+Future<void> fetchData() async {
+  try {
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      print(data);
+    } else {
+      throw Exception('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+```
+
+### 6. Example usage in a Flutter app
+
+Here’s how you might integrate fetching data into a simple Flutter app:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Network API Example')),
+        body: Center(child: DataWidget()),
+      ),
+    );
+  }
+}
+
+class DataWidget extends StatefulWidget {
+  @override
+  _DataWidgetState createState() => _DataWidgetState();
+}
+
+class _DataWidgetState extends State<DataWidget> {
+  List<dynamic> _data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _data = jsonDecode(response.body);
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: _data.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_data[index]['title']),
+          subtitle: Text(_data[index]['body']),
+        );
+      },
+    );
+  }
+}
+```
+### ScreenShorts
+
+<p>
+  <img src='https://github.com/Aksharpatel06/adv_flutter_ch5/assets/143181114/4d5e0498-1f74-459f-8601-0d88cfac71cf' width=240>
+  <img src='https://github.com/Aksharpatel06/adv_flutter_ch5/assets/143181114/bb1e8fbb-98b4-47a0-9594-9a2b7af3eac7' width=240>
+  <img src='https://github.com/Aksharpatel06/adv_flutter_ch5/assets/143181114/0e64367f-eaa1-4dbc-9d4f-e688f588437d' width=240>
+</p>
+
+### Video
+
+https://github.com/Aksharpatel06/adv_flutter_ch5/assets/143181114/306eb688-92e0-4d97-aa2b-37d4a518599e
